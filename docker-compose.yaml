@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  redis:
+    image: redis/redis-stack
+    environment:
+      - REDIS_ARGS = "--save 10 1 --appendonly yes"
+    ports:
+      - "127.0.0.1:6379:6379/tcp"
+      - "127.0.0.1:8001:8001" # порт для керування та моніторингу через веб-інтерфейс
+    volumes:
+      - ./redis_data:/data:rw
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672" # порт для AMQP
+      - "15672:15672" # порт для керування та моніторингу через веб-інтерфейс
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq # зберігання даних RabbitMQ
+volumes:
+  rabbitmq_data:
